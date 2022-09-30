@@ -12,7 +12,7 @@
 			<span>휴무</span>
 		</div>
 		<div>
-			<input type="button" class="btn btn-EA5C2B" onclick="location.href='${pageContext.request.contextPath}/inquire/inquireAdmin.do';" value="문의하기">
+			<input type="button" class="btn btn-EA5C2B inquireAdmin" value="문의하기">
 			<input type="button" class="btn btn-EA5C2B-reverse" onclick="faq()" value="자주 묻는 질문">
 		</div>
 	</nav>
@@ -35,8 +35,113 @@
 			<span>Copyrithgⓒ 2022 주식회사 모농모농 All rights reserved.</span>
 		</div>
 	</nav>
+	
+	<div class="faqContainer faqHide">
+		<div class="row faqWrapperTitle">자주 묻는 질문(FAQ)</div>
+		<div class="faqWrapper"></div>
+	</div>
+	<div id="faqIcon" class="pointer">&#127808;</div>
 </footer>
+
 <script>
+document.querySelector("#faqIcon").addEventListener('click', () => {
+	const container = document.querySelector(".faqContainer");
+	container.classList.toggle('faqHide');
+	getFaqListType();
+	
+});
+const getFaqListType = () => {
+	const wrapper = document.querySelector(".faqWrapper");
+	wrapper.innerHTML = '';
+	$.ajax({
+		url: `${pageContext.request.contextPath}/common/getFaqListType.do`,
+		contentType : 'application/json',
+		beforeSend: function(){
+			wrapper.innerHTML = `
+			<div class="d-flex justify-content-center">
+				<div class="spinner-border text-light" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+			`;
+		},
+		success(faqTypeList){
+			wrapper.innerHTML = "";
+			for(let i = 0; i < faqTypeList.length; i++){
+				let _faqType = faqTypeList[i].faqType;
+				wrapper.insertAdjacentHTML("beforeend", changeType(_faqType));
+			};
+		},
+		error: console.log
+	});
+};
+
+$(document).on('click', '[data-faqtype]', function(e){
+	const container = document.querySelector(".faqContainer");
+	const faqType = e.target.dataset.faqtype;
+	let type = ''
+	switch(faqType){
+	case 's' : type = "구독"; break;
+	case 'o' : type = "결제"; break;
+	case 'd' : type = "직거래"; break;
+	case 'm' : type = "회원"; break;
+	}
+	
+	const wrapper = document.querySelector(".faqWrapper");
+	wrapper.innerHTML = '';
+	
+	const selectTitle = '<div class="row faqSelectTitle" onclick="getFaqListType();"><<&nbsp&nbsp&nbsp&nbsp FAQ - ' + type + '</div>';
+	wrapper.insertAdjacentHTML("beforeend", selectTitle);
+	
+	$.ajax({
+		url: `${pageContext.request.contextPath}/common/findType.do`,
+		data: {faqType},
+		success(data){
+			let html = ``;
+			if(data.length){
+				data.forEach((faq) => {
+					const {faqTitle, faqContent} = faq;
+					html = `
+					<div class="faq-menu-title faq-bot-title">\${faqTitle}
+						<p class="faq-menu-content faq-bot-content">\${faqContent}</p>
+					</div>
+					`;
+					wrapper.insertAdjacentHTML("beforeend", html);
+				});
+			}
+			else {
+				html = `
+					<div class="text-center">조회결과가 없습니다.</div>
+				`;
+				wrapper.insertAdjacentHTML("beforeend", html);
+			};
+		},
+		error: console.log
+	});
+});
+
+const changeType = (_faqType) => {
+	let faqType = '';
+	switch(_faqType){
+	case 's' : faqType = "구독"; break;
+	case 'o' : faqType = "결제"; break;
+	case 'd' : faqType = "직거래"; break;
+	case 'm' : faqType = "회원"; break;
+	}
+	return '<div class="row" data-faqtype="' + _faqType + '">' + faqType + '</div>';
+};
+
+$(document).on('click', '.faq-bot-title', function(e){
+	$(e.target).children().slideToggle();
+	$('.faq-menu-content').not($(e.target).children()).slideUp();
+});
+
+// 문의하기
+document.querySelector(".inquireAdmin").addEventListener('click', () => {
+	const url = '${pageContext.request.contextPath}/inquire/inquireAdmin.do';
+	window.open(url, '문의하기', 'width=550, height=550');
+});
+
 const faq = () => {
 	location.href = `${pageContext.request.contextPath}/common/faqList.do`;
 };

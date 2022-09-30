@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.kh.monong.common.faq.model.dao.FaqDao;
@@ -42,6 +43,16 @@ public class FaqServiceImpl implements FaqService {
 	@Override
 	public List<Faq> searchType(String type) {
 		return faqDao.searchType(type);
+	}
+	
+	@Override
+	public List<Faq> getFaqListType() {
+		return faqDao.getFaqListType();
+	}
+	
+	@Override
+	public List<Faq> findType(String faqType) {
+		return faqDao.findType(faqType);
 	}
 	
 }

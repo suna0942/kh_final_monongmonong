@@ -37,7 +37,6 @@
 $(document).on('click', '.faq-menu-title', function(e){
 	$(e.target).children().slideToggle();
 	$('.faq-menu-content').not($(e.target).children()).slideUp();
-	
 });
 
 const faqType = document.querySelectorAll(".faq-menu-list").forEach((type) => {

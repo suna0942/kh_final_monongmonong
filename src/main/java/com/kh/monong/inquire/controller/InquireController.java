@@ -1,6 +1,7 @@
 package com.kh.monong.inquire.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,11 +30,11 @@ public class InquireController {
 	 * @return
 	 */
 	@PostMapping("/inquireAdmin.do")
-	public String insertInquire(Inquire inquire, RedirectAttributes redirectAttr) {
-		log.debug("inquire = {}", inquire);
+	public ResponseEntity<?> insertInquire(Inquire inquire, RedirectAttributes redirectAttr) {
 		int result = inquireService.insertInquire(inquire);
-		redirectAttr.addFlashAttribute("msg", "관리자 문의가 등록되었습니다.");
-			
-		return "redirect:/member/memberInquireList.do";
+		String msg = "";
+		if(result == 1)
+			msg = "close";
+		return ResponseEntity.ok().body(msg);
 	}
 }

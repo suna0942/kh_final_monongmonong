@@ -287,6 +287,7 @@ footer {
 	padding: 10px 20px;
 	line-height: 2.5;
 	border-bottom: 1px solid #F6D860;
+	cursor: pointer;
 }
 
 .faq-menu-content {
@@ -325,5 +326,72 @@ footer {
 }
 #carouselExampleIndicators  img {
 	border-radius: 10px;
+}
+
+
+/*
+----------------------고정 faq -----------------------
+*/
+.faqHide {
+	display: none;
+}
+.faqContainer {
+	position: fixed;
+	z-index: 15;
+	bottom: 100px;
+	right: 20px;
+	width: 370px;
+	height: 400px;
+	background-color: #F6D860;
+	border-radius: 10px;
+	overflow-y: scroll;
+}
+.faqWrapper {
+	color: #fff;
+}
+.faqContainer .row {
+	margin: 0;
+	padding: 20px 15px 15px 30px;
+	font-size: 20px;
+}
+.faqWrapperTitle {
+	color: #333;
+	border-bottom: 1px solid #333;
+}
+.faqSelectTitle {
+	background-color: #333;
+	color: #fff;
+	cursor: pointer;
+}
+.faqWrapper .row:hover:not(.faqSelectTitle) {
+	background-color: #fff;
+	color: #333;
+	cursor: pointer;
+}
+
+.faqWrapper .d-flex.justify-content-center {
+	margin-top: 50px;
+}
+
+.faq-bot-title {
+	font-weight: 400;
+}
+.faq-bot-title:hover,
+.faq-bot-content {
+	font-weight: 400;
+	background-color: #ffffff61;
+	color: #333;
+}
+.faq-bot-content {
+	border-radius: 10px;
+}
+#faqIcon {
+	width: 50px;
+	height: 50px;
+	position: fixed;
+	z-index: 15;
+	bottom: 40px;
+	right: 20px;
+	font-size: 35px;
 }
 
