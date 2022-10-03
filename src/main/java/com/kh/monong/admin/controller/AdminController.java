@@ -222,10 +222,7 @@ public class AdminController {
 	 * 관리자 -> 회원 답변
 	 */
 	@PostMapping("/inquireAnswer.do")
-	public ResponseEntity<?> insertInquireAnswer(InquireAnswer inqAnswer, MemberNotification notice) {
-		log.debug("inqAnswer = {}",inqAnswer);
-		log.debug("notice = {}", notice);
-		
+	public ResponseEntity<?> insertInquireAnswer(InquireAnswer inqAnswer, MemberNotification notice) {		
 		//답변저장
 		int result = inquireService.insertInquireAnswer(inqAnswer);
 		
@@ -248,20 +245,16 @@ public class AdminController {
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		param.put("dSaleStatus", dSaleStatus);
-		log.debug("param = {}", param);
 		List<DirectProduct> prodList = directService.adminSelectPordList(param);
 		
 		model.addAttribute("prodList", prodList);
 		
 		int totalContent = directService.getTotalProdCntByStatus(param);
-		log.debug("totalContent = {}", totalContent);
 		
 		String url = request.getRequestURI(); 
 		url += "?dSaleStatus=" + dSaleStatus;
 		String pagebar = MonongUtils.getPagebar(cPage, limit, totalContent, url);
 		model.addAttribute("pagebar", pagebar);
-		
-		log.debug("model = {}", model);
 	}
 	//--------------------------------------------------------수진끝
 	//--------------------------------------------------------선아 시작
@@ -384,7 +377,6 @@ public class AdminController {
 		param.put("changeDStatus", changeDStatus);
 		int result = subscribeService.updateSubDelivery(param);
 		
-		//수진 코드시작
 		String content = "정기구독상품이 " +changeDStatus + ("배송완료".equals(changeDStatus) ? "되었습니다." : "입니다.");
 		String memberId = subscribeService.selectMemberIdBySoNo(subOrderNo);
 		MemberNotification notice = MemberNotification.builder()
@@ -394,7 +386,6 @@ public class AdminController {
 				.messageType(MessageType.SO_STATUS)
 				.build();	
 		result = notificationService.insertNotification(notice);
-		//수진코드 끝
 		
 		return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
@@ -412,7 +403,6 @@ public class AdminController {
 			if(orderLists != null) {
 				for(SubscriptionOrder orderList : orderLists) {
 					String status = orderList.getSOrderStatus();
-					log.debug("status = {}", status);
 					// 혹시라도 상품준비중이 아닐 경우
 					if(!"상품준비중".equals(status)) return;
 					
@@ -420,7 +410,6 @@ public class AdminController {
 					param.put("subOrderNo", orderList.getSOrderNo());
 					param.put("changeDStatus", "배송중");
 					int result = subscribeService.updateSubDelivery(param);
-					log.debug("상태변경 result = {}", result);
 				}
 			}
 		}

@@ -90,7 +90,7 @@ function closeToSunday(){
 	document.getElementById("popup").style.display = 'none';
 	window.close();
 }
-// 일주일 안보기 버튼
+// 일요일까지 안보기 버튼
 function closeToday(){
 	let today = new Date();
 	let todayDay = new Date().getDay();

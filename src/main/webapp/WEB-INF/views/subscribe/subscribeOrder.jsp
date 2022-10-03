@@ -308,7 +308,7 @@ document.querySelector("#showkModal").addEventListener('click', () => {
 		let csrfName = $('.csrfname').attr('name'); // CSRF Token name
 		let csrfHash = $('.csrfname').val(); // CSRF hash
 		
-	    var IMP = window.IMP; // 생략 가능
+	    var IMP = window.IMP;
 	    IMP.init("imp46723363");
 	    
 	    // 일반 결제 선택 시 kg, 카카오페이 선택 시 kakao
@@ -328,7 +328,6 @@ document.querySelector("#showkModal").addEventListener('click', () => {
 			buyer_tel : memberTel // 회원 전화번호
 		},
 		function(rsp) {
-			// console.log('rsp = ', rsp); // 화인용
 			const {success, status} = rsp;
 			if (success) {
 				let cardNo = rsp.card_number;
@@ -345,7 +344,6 @@ document.querySelector("#showkModal").addEventListener('click', () => {
 							[csrfName]: csrfHash // csrf값 전달
 						},
 						success(response){
-							// console.log('response : ', response);
 							if(response == 1){
 								// 2. 구독 테이블에 저장
 								frm.sNo.value = sNo;
@@ -364,7 +362,6 @@ document.querySelector("#showkModal").addEventListener('click', () => {
 				}
 			} else {
 				alert('결제에 실패했습니다. 다시 시도해주세요');
-				// console.log("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
 				$('#checkModal').modal('hide');
 			}
 		});

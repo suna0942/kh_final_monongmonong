@@ -154,10 +154,8 @@
 document.querySelector(".s-product-container:nth-of-type(1)").classList.add("selected");
 
 const products = document.querySelectorAll(".s-product-container");
-
 products.forEach(function (product, index){
     product.addEventListener('click', (e) => {
- 		// console.log(product);
         product.classList.add("selected");
         
         products.forEach(function (prod, i){
@@ -169,7 +167,6 @@ products.forEach(function (product, index){
 
         // 선택한 상품값 저장
         document.querySelector("#sProduct").value = product.dataset.sproduct;
-        // console.log(document.querySelector("#sProduct").value);
     });
 });
 
@@ -194,7 +191,6 @@ noExcludeVegsCheck.addEventListener('change', (e) => {
 
 vegs.forEach((veg)=>{
     veg.addEventListener('change', (e) => {
-        // console.log(e.target);
         if(e.target.checked === true){
         	excludeVegsCntInfo.style.display = "initial";
       
@@ -215,16 +211,12 @@ vegs.forEach((veg)=>{
             excludeVegsCntInfo.style.color = "black";
             excludeVegsNum.innerHTML = excludeVegsCnt;
         }
-        // console.log(excludeVegsCnt);
-        
     });
 });
 
 
 subscribePlanFrm.addEventListener('submit', (e) => {
 	const sExcludeVegsYn = document.querySelector("[name=sExcludeVegs]");
-	console.log(sExcludeVegsYn.checked);
-	console.log(excludeVegsCnt);
 	
 	if(sExcludeVegsYn.checked == false && excludeVegsCnt === 0){
 		alert("제외 채소 유무를 선택해주세요.");
@@ -235,10 +227,8 @@ subscribePlanFrm.addEventListener('submit', (e) => {
 	const sDeliveryCycleYnArr = []; // 배송 주기 선택 여부 담는 배열
 	const sDeliverCycles = document.querySelectorAll("[name=sDeliveryCycle]");
 	
-	sDeliverCycles.forEach(function (cycle, index) {
-		// console.log(cycle.checked);
+ 	sDeliverCycles.forEach(function (cycle, index) {
 		sDeliveryCycleYnArr.push(cycle.checked);
-		// console.log(sDeliveryCycleYnArr);
 	});
 	
 	if(sDeliveryCycleYnArr.indexOf(true) === -1){
