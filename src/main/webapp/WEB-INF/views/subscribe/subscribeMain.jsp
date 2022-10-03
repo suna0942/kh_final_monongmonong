@@ -197,13 +197,9 @@ const sReviewList = (num) => {
 		data: {cPage},
 		method : "GET",
 		success(result){
-			// console.log('result', result);
-			console.log('sReviewList', result['sReviewList']);
 			const reviews = result['sReviewList'];
 			const cPage = result['cPage'];
-			console.log('cPage', cPage);
 			const totalContent = result['totalContent'];
-			console.log('totalContent', totalContent);
 
 			// 페이징
 			if(totalContent == 0){
@@ -222,19 +218,16 @@ const sReviewList = (num) => {
 	
 			reviews.forEach((review, index) => {
 				const sAttach = review.sattachments;
-				console.log('sAttach', sAttach);
 				
 				const {memberId, sreviewContent, sreviewCreatedAt, sreviewStar, stimes} = review;
 				
 				html += `
 				<div class="s-review-wrapper" onclick="reviewDetail(this,'\${review.sreviewNo}');" data-toggle="modal" data-target="#myModal">`;
 				if(!sAttach[0]){
-					console.log('이미지 없음');
 					html += `
 						<div class="s-review-container no-img">`;
 				}
 				else{
-					console.log('이미지 있음');
 					html += `
 						<div>
 							<img src="${pageContext.request.contextPath}/resources/upload/subscribe/review/\${sAttach[0].sreviewRenamedFilename}">
@@ -264,7 +257,6 @@ const sReviewList = (num) => {
 			    const month = sreviewCreatedAt[1];
 			    const day = sreviewCreatedAt[2];
 			    const writtenDate = `\${year}-\${month >= 10 ? month : '0' + month}-\${day >= 10 ? day : '0' + day}`;
-		        console.log('writtenDate', writtenDate);
 		        
 			    html += `
 			   		</div>
@@ -276,7 +268,6 @@ const sReviewList = (num) => {
 			
 			});
 			document.querySelector(".s-reviews-wrapper").innerHTML = html;
-			/* document.querySelector(".s-review-page-bar").innerHTML = pagebar; */
 				
 		},
 		error : console.log
@@ -348,10 +339,7 @@ function pageLink(cPage, totalPages, funName){
 
 
 const reviewDetail = (obj, sReviewNo) => {
-	console.log('obj: ', obj, 'sReviewNo: ', sReviewNo);
-
 	const loginMember = document.querySelector(".s-review-login-member");
-	console.log('loginMember', loginMember);
 	
 	// 로그인된 상태인 경우 -> 후기 게시글 추천여부 확인
 	if(loginMember != null){
@@ -383,7 +371,6 @@ const reviewDetail = (obj, sReviewNo) => {
 		success(review){
 			const {memberId, sreviewContent, sreviewCreatedAt, sreviewRecommendNum, sreviewStar, stimes} = review;
 			const sAttach = review.sattachments;
-			console.log('sAttach', sAttach);
 			
 		 	const modalImg = document.querySelector(".modal-img");
 			if(sAttach.length >= 1){
@@ -467,14 +454,12 @@ const viewImg = (selectedImg) => {
 
 const sReviewRecommend = () => {	
 	const loginMember = document.querySelector(".s-review-login-member");
-	console.log('loginMember', loginMember);
 	
 	if(loginMember === null){
 		alert('로그인 후 이용가능합니다.');
 		location.href = `${pageContext.request.contextPath}/member/memberLogin.do`;
 	}
 	else{
-		console.log('loginMember', loginMember.dataset.memberId);
 		const memberId = loginMember.dataset.memberId;
 	  
 		const recommendNum = document.querySelector(".modal-s-review-recommend-num");		

@@ -72,7 +72,8 @@
 function setCookie(name, value, expiredays){
 	let todayDate = new Date();
 	todayDate.setDate(todayDate.getDate() + expiredays);
-	document.cookie = name + "=" + value + "; path=/; expires=" + todayDate.toUTCString() + ";";
+	document.cookie = 
+		name + "=" + value + "; path=/; expires=" + todayDate.toUTCString() + ";";
 }
 
 $(function(){
@@ -83,15 +84,14 @@ $(function(){
 	}
 })
 
-
 // 오늘 하루 안보기 버튼
-function closeToSunday(){
+function closeToday(){
 	setCookie("popToday", "close", 1);
 	document.getElementById("popup").style.display = 'none';
 	window.close();
 }
 // 일요일까지 안보기 버튼
-function closeToday(){
+function closeToSunday(){
 	let today = new Date();
 	let todayDay = new Date().getDay();
 	if(todayDay == 0){
