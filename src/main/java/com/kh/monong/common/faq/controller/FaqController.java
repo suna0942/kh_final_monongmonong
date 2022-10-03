@@ -58,7 +58,6 @@ public class FaqController {
 	@GetMapping("/searchLikeKeyword.do")
 	public ResponseEntity<?> searchLikeKeyword(String keyword){
 		List<Faq> searchFaqList = faqService.searchLikeKeyword(keyword);
-		log.debug("searchFaqList", searchFaqList);
 		return ResponseEntity.ok().body(searchFaqList);
 	}
 	

@@ -47,7 +47,6 @@ public class SubscribeController {
 	@Autowired
 	MemberService memberService;
 	
-	// 선아코드 시작
 	/**
 	 * 주문결제 페이지
 	 */
@@ -57,6 +56,7 @@ public class SubscribeController {
 			@RequestParam String[] sExcludeVegs,
 			@RequestParam int sDeliveryCycle,
 			Model model) {
+		log.debug("model = {}", model);
 		SubscriptionProduct orderProduct = subscribeService.selectProductInfoByCode(sProduct);
 		
 		model.addAttribute("orderProduct", orderProduct);
@@ -258,16 +258,10 @@ public class SubscribeController {
 		return "SO" + date + ran;
 	}
 	
-	// 선아코드 끝
-
-	// 미송코드 시작
 	@GetMapping("/subscribePlan.do")
 	public void subscriptionPlan(Model model) {
 		List<SubscriptionProduct> subscriptionProduct = subscribeService.getSubscriptionProduct();
-		log.debug("subscriptionProduct = {}", subscriptionProduct);
-
 		List<Vegetables> vegetables = subscribeService.getVegetables();
-		log.debug("vegetables = {}", vegetables);
 
 		model.addAttribute("subscriptionProduct", subscriptionProduct);
 		model.addAttribute("vegetables", vegetables);
@@ -275,26 +269,20 @@ public class SubscribeController {
 	
 	@GetMapping("/subscribeMain.do")
 	public void subscribeMain(Model model, Authentication authentication) {
-		// 선아 추가(이미 구독중인 사람은 버튼 비활성화)
+		// 이미 구독중인 사람은 버튼 비활성화
 		if(authentication != null) {
 			Member member = (Member) (authentication.getPrincipal());
-			log.debug("plan member = {}", member);
 			String isSubscribe = "";
 			if(member != null) {
 				isSubscribe = subscribeService.getSubscriptionByMemberId(member.getMemberId());
 				if(isSubscribe != null)
 					isSubscribe = "Y";
 			}
-			log.debug("isSubscribe = {}", isSubscribe);
 			model.addAttribute("isSubscribe", isSubscribe);
 		}
-		
 		double sReviewStarAvg = subscribeService.getSubscriptionReviewStarAvg();
 
-		log.debug("sReviewStarAvg = {}", sReviewStarAvg);
-		
 		int totalContent = subscribeService.getTotalContent();
-		log.debug("totalContent = {}", totalContent);
 		
 		// 상품정보 불러오기
 		List<SubscriptionProduct> subscriptionProduct = subscribeService.getSubscriptionProduct();
@@ -311,7 +299,6 @@ public class SubscribeController {
 		param.put("cPage", cPage);
 		param.put("limit", limit);
 		List<SubscriptionReview> sReviewList = subscribeService.selectSubscriptionReviewList(param);
-		log.debug("sReviewList = {}", sReviewList);
 		
 		int totalContent = subscribeService.getTotalContent();
 		
@@ -325,37 +312,26 @@ public class SubscribeController {
 	
 	@GetMapping("/subscribeReviewDetail.do")
 	public ResponseEntity<?> subscribeReviewDetail(@RequestParam String sReviewNo) {
-		log.debug("sReviewNo = {}", sReviewNo);
-		
 		SubscriptionReview sReview = subscribeService.selectOneSubscriptionReview(sReviewNo);
 		log.debug("sReview = {}", sReview);
 		
 		return ResponseEntity.ok(sReview);
 	}
 	
-	
 	@GetMapping("/subscribeReviewRecommended.do")
 	public ResponseEntity<?> subscribeReviewRecommended(@RequestParam String sReviewNo, @RequestParam String memberId) {
-		log.debug("sReviewNo = {}", sReviewNo);
-		log.debug("memberId = {}", memberId);
-		
 		Map<String, String> param = new HashMap<>();
 		param.put("memberId", memberId);
 		param.put("sReviewNo", sReviewNo);
-		log.debug("param = {}", param);
 		
 		int sRecommendedYn = subscribeService.getRecommendedYn(param);
 		boolean recommended = sRecommendedYn == 1;
-		log.debug("recommended = {}", recommended);
 		
 		return ResponseEntity.ok(recommended);
 	}
 	
 	@PostMapping("/subscribeReviewRecommendAdd.do")
 	public ResponseEntity<?> subscribeReviewRecommendAdd(@RequestParam String memberId, @RequestParam String sReviewNo) {
-		log.debug("memberId = {}", memberId);
-		log.debug("sReviewNo = {}", sReviewNo);
-		
 		Map<String, String> param = new HashMap<>();
 		param.put("memberId", memberId);
 		param.put("sReviewNo", sReviewNo);
@@ -366,9 +342,6 @@ public class SubscribeController {
 	
 	@PostMapping("/subscribeReviewRecommendCancel.do")
 	public ResponseEntity<?> subscribeReviewRecommendCancel(@RequestParam String memberId, @RequestParam String sReviewNo) {
-		log.debug("memberId = {}", memberId);
-		log.debug("sReviewNo = {}", sReviewNo);
-		
 		Map<String, String> param = new HashMap<>();
 		param.put("memberId", memberId);
 		param.put("sReviewNo", sReviewNo);
@@ -376,6 +349,4 @@ public class SubscribeController {
 		
 		return ResponseEntity.ok(result);
 	}
-	// 미송코드 끝
-
 }
